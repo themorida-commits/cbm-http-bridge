@@ -1,0 +1,13 @@
+# Secrets — never commit
+token
+.env
+.env.*
+*.plist
+!launchd/*.plist.example
+audit.log
+bridge.log
+
+# Dependencies / runtime
+node_modules/
+__pycache__/
+*.pyc

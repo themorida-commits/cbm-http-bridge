@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Example launchd agent for cbm-http-bridge on macOS.
+
+  Before installing:
+  1. Replace every __PLACEHOLDER__ below with your own values:
+     - __HOME__          your home directory, e.g. /Users/you
+     - __NODE__          absolute path to Node.js, e.g. /opt/homebrew/bin/node
+     - __TAILNET_IP__    this Mac's Tailscale IP, e.g. 100.x.x.x
+     - __BRIDGE_TOKEN__  a long random secret (same value your clients send
+                         as the Bearer token). Treat this file as a secret
+                         once filled in: chmod 600, never commit it.
+  2. Save the filled file as ~/Library/LaunchAgents/com.example.cbm-http.plist
+  3. Load it:  launchctl load ~/Library/LaunchAgents/com.example.cbm-http.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.cbm-http</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>__NODE__</string>
+    <string>__HOME__/cbm-http-bridge/bridge.mjs</string>
+  </array>
+  <key>WorkingDirectory</key>
+  <string>__HOME__/cbm-http-bridge</string>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>CBM_BRIDGE_TOKEN</key>
+    <string>__BRIDGE_TOKEN__</string>
+    <key>CBM_HTTP_HOST</key>
+    <string>__TAILNET_IP__</string>
+    <key>CBM_HTTP_PORT</key>
+    <string>8321</string>
+    <key>CBM_BIN</key>
+    <string>__HOME__/.local/bin/codebase-memory-mcp</string>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>__HOME__/cbm-http-bridge/bridge.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/cbm-http-bridge/bridge.log</string>
+</dict>
+</plist>
